@@ -1,8 +1,7 @@
 from random import randint
 
 
-def parseText(text, size):
-
+def clearText(text, size):
 	for i in range(size):
 		char = text[i]
 		if char == ' ':
