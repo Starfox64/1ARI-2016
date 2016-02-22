@@ -16,6 +16,7 @@ def clearText(text, size):
 			text[i] = 'o'
 		elif char == 'ù' or char == 'û' or char == 'ü':
 			text[i] = 'u'
+		text.upper()
 	return text
 
 
@@ -59,7 +60,7 @@ def decryptLetter(index, key):
 
 
 def decryptText(cryptedText, size, key):
-	clearText = list()
+	clearedText = list()
 	for i in range(size):
-		clearText.append(decryptLetter(cryptedText[i], key))
-	return clearText
+		clearedText.append(decryptLetter(cryptedText[i], key))
+	return clearedText

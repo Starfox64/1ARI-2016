@@ -20,12 +20,12 @@ def parseText(text, size):
 	return text
 
 
-def splitAlphabet(alphabet):
+def createKey(key):
 	l = list()
 	for i in range(5):
 		internL = list()
 		for j in range(5):
-			internL.append(alphabet[i * 5 + j])
+			internL.append(key[i * 5 + j])
 		l.append(internL.copy())
 	return l
 
