@@ -1,13 +1,23 @@
 from random import randint
 
 
-def parseClearText(clearText, size):
-	parsedText= ""
+def parseText(text, size):
 
 	for i in range(size):
-		if clearText[i] == ' ':
-			print()
-	return parsedText
+		char = text[i]
+		if char == ' ':
+			text = text[0 : i] + text[i + 1 : size]
+		elif char == 'à' or char == 'â' or char == 'ä':
+			text[i] = 'a'
+		elif char == 'é' or char == 'è' or char == 'ê' or 'ë':
+			text[i] = 'e'
+		elif char == 'î' or char == 'ï':
+			text[i] = 'i'
+		elif char == 'ô' or char == 'ô' or char == 'ö':
+			text[i] = 'o'
+		elif char == 'ù' or char == 'û' or char == 'ü':
+			text[i] = 'u'
+	return text
 
 
 def createDict(keyText, size):
