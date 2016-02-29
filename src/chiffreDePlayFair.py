@@ -6,7 +6,7 @@ def parseText(text, size):
 	#FIRST FUNCTION
 	for i in range(size):
 		if text[i] == 'w':
-			text[i] = 'v'
+			text = text[0 : i] + 'v' + text[i+1 : size]
 	#SECOND FUNCTION
 	for i in range(size):
 		if text[i] == text[i + 1]:

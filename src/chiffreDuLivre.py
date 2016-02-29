@@ -7,15 +7,15 @@ def clearText(text, size):
 		if char == ' ':
 			text = text[0 : i] + text[i + 1 : size]
 		elif char == 'à' or char == 'â' or char == 'ä':
-			text[i] = 'a'
+			text = text[0 : i] + 'a' + text[i+1 : size]
 		elif char == 'é' or char == 'è' or char == 'ê' or 'ë':
-			text[i] = 'e'
+			text = text[0 : i] + 'e' + text[i+1 : size]
 		elif char == 'î' or char == 'ï':
-			text[i] = 'i'
+			text = text[0 : i] + 'i' + text[i+1 : size]
 		elif char == 'ô' or char == 'ô' or char == 'ö':
-			text[i] = 'o'
+			text = text[0 : i] + 'o' + text[i+1 : size]
 		elif char == 'ù' or char == 'û' or char == 'ü':
-			text[i] = 'u'
+			text = text[0 : i] + 'u' + text[i+1 : size]
 		text.upper()
 	return text
 
