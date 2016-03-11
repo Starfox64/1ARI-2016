@@ -2,9 +2,6 @@ from random import randint
 import os
 #import unicodedata
 
-cypherFileName = 'crypto_files/chiffre1.txt'
-keyFileName = 'crypto_files/cle1.txt'
-
 
 def clearText(text):
 	text = text.replace(' ', '')
