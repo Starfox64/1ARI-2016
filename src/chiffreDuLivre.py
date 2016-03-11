@@ -1,34 +1,33 @@
 from random import randint
+import os
+#import unicodedata
+
+cypherFileName = 'crypto_files/chiffre1.txt'
+keyFileName = 'crypto_files/cle1.txt'
 
 
-def clearText(text, size):
-	for i in range(size):
-		char = text[i]
-		if char == ' ':
-			text = text[0 : i] + text[i + 1 : size]
-		elif char == 'à' or char == 'â' or char == 'ä':
-			text = text[0 : i] + 'a' + text[i+1 : size]
-		elif char == 'é' or char == 'è' or char == 'ê' or 'ë':
-			text = text[0 : i] + 'e' + text[i+1 : size]
-		elif char == 'î' or char == 'ï':
-			text = text[0 : i] + 'i' + text[i+1 : size]
-		elif char == 'ô' or char == 'ô' or char == 'ö':
-			text = text[0 : i] + 'o' + text[i+1 : size]
-		elif char == 'ù' or char == 'û' or char == 'ü':
-			text = text[0 : i] + 'u' + text[i+1 : size]
-		text.upper()
-	return text
+def clearText(text):
+	text = text.replace(' ', '')
+	text = text.upper()
+	output = ''
+	for char in text:
+		if 65 <= ord(char) <= 90:
+			output += char
+
+	#text = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
+
+	return output
 
 
-def createDict(keyText, size):
+def createDict(keyText):
 	dico = dict()
-	fakeOccurence = size
+	fakeOccurence = len(keyText)
 	for i in range(65, 91):
 		key = chr(i)
 		l = list()
 		isInText = False
 
-		for j in range(size):
+		for j in range(len(keyText)):
 			if keyText[j] == key:
 				isInText = True
 				l.append(j)
@@ -41,26 +40,118 @@ def createDict(keyText, size):
 
 
 def encryptLetter(letter, key):
-	x = randint(0, len(key[letter]))
+	x = randint(0, len(key[letter]) - 1)
 	return key[letter][x]
 
 
-def encryptText(text, size, key):
+def encryptText(text, key):
 	l = list()
-	for i in range(size):
-		l.append(encryptLetter(text[i], key))
+	for char in text:
+		l.append(encryptLetter(char, key))
+
 	return l
 
 
 def decryptLetter(index, key):
-	for i in range(65, 91):
-		if index in key[chr(i)]:
-			return chr(i)
-		return 0
+	for letter, values in key.items():
+		if index in values:
+			return letter
+
+	return ''
 
 
-def decryptText(cryptedText, size, key):
-	clearedText = list()
-	for i in range(size):
-		clearedText.append(decryptLetter(cryptedText[i], key))
+def decryptText(cryptedText, key):
+	clearedText = ''
+	parsedText = parseEncryptedText(cryptedText)
+
+	for number in parsedText:
+		clearedText += decryptLetter(number, key)
+
 	return clearedText
+
+
+def parseEncryptedText(text):
+	numbers = text.split(',')
+	output = list()
+
+	for number in numbers:
+		try:
+			output.append(int(number))
+		except ValueError:
+			continue
+
+	return output
+
+
+def parseInput(message, returnType="int", callback=None):
+	while True:
+		res = input(message)
+
+		if returnType == "int":
+			try:
+				returnVal = int(res)
+			except ValueError:
+				continue
+
+			if not callback or callback(returnVal):
+				return returnVal
+		elif returnType == "float":
+			try:
+				returnVal = float(res)
+			except ValueError:
+				continue
+
+			if not callback or callback(returnVal):
+				return returnVal
+		elif returnType == "str":
+			if not callback or callback(res):
+				return res
+
+
+def openFile(fileName):
+	currentDir = os.path.dirname(os.path.realpath(__file__))
+	if os.path.isfile(os.path.join(currentDir, 'crypto_files', fileName)):
+		return open(os.path.join(currentDir, 'crypto_files', fileName), 'r')
+
+
+advanced = parseInput(
+	'Do you wish to use advanced mode (include special characters) (Y/N)? ',
+	'str',
+	lambda s: s.upper() == 'Y' or s.upper() == 'N'
+)
+mode = parseInput('Do you wish to:\n1) Encrypt\n2) Decrypt\n', 'int', lambda n: n <= 2)
+
+if mode == 1:
+	dataFileName = parseInput(
+		'Please enter the name of the file you wish to encrypt (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+	keyFileName = parseInput(
+		'Please enter the name of the file containing the key (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	dataFile = openFile(dataFileName)
+	keyFile = openFile(keyFileName)
+
+	encrypted = encryptText(clearText(dataFile.read()), createDict(clearText(keyFile.read())))
+	print('Your message has been encrypted:\n' + ', '.join(map(str, encrypted)))
+else:
+	dataFileName = parseInput(
+		'Please enter the name of the file you wish to decrypt (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+	keyFileName = parseInput(
+		'Please enter the name of the file containing the key (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	dataFile = openFile(dataFileName)
+	keyFile = openFile(keyFileName)
+
+	decrypted = decryptText(dataFile.read(), createDict(clearText(keyFile.read())))
+	print('Your message has been decrypted:\n' + decrypted)
