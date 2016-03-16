@@ -1,0 +1,9 @@
+Livre:
+Que pensez-vous de la sécurité de cet algorithme ?
+
+Quels sont ses principales qualités et défauts ?
+Pros:
+	- Si la cle est assé longue et aléatoire une analyse de fréquences n'est pas possible.
+
+Cons:
+	- Il faut se partager la cle au préalable (symétrie)

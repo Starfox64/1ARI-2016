@@ -1,22 +1,20 @@
 from src.chiffreDuLivre import clearText
 
 
-def parseText(text, size):
-	text = clearText(text, size)
-	#FIRST FUNCTION
+def parseText(text):
+	text = clearText(text, 'Y')
+	text = text.replace('W', 'V')
+	size = len(text)
+
 	for i in range(size):
-		if text[i] == 'w':
-			text = text[0 : i] + 'v' + text[i+1 : size]
-	#SECOND FUNCTION
-	for i in range(size):
-		if text[i] == text[i + 1]:
-			if text[i] != 'x':
-				text = text[0 : i + 1] + 'x' + text[i + 1 : size]
+		if i < size - 1 and text[i] == text[i + 1]:
+			if text[i] != 'X':
+				text = text[0 : i + 1] + 'X' + text[i + 1 : size]
 			else:
-				text = text[0 : i + 1] + 'l' + text[i + 1 : size]
-	#THIRD FUNCTION
+				text = text[0 : i + 1] + 'L' + text[i + 1 : size]
+
 	if size % 2 == 1:
-		text += "x" if text[size - 1] != 'x' else 'l'
+		text += 'X' if text[size - 1] != 'X' else 'L'
 	return text
 
 

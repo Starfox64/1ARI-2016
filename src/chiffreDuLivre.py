@@ -1,17 +1,20 @@
 from random import randint
 import os
-#import unicodedata
+import unicodedata
 
 
-def clearText(text):
+def clearText(text, advanced):
 	text = text.replace(' ', '')
 	text = text.upper()
+
+	# Removes accents from all characters.
+	if advanced.upper() == 'Y':
+		text = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
+
 	output = ''
 	for char in text:
 		if 65 <= ord(char) <= 90:
 			output += char
-
-	#text = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
 
 	return output
 
@@ -111,6 +114,22 @@ def openFile(fileName):
 		return open(os.path.join(currentDir, 'crypto_files', fileName), 'r')
 
 
+def askFileNames(decrypt):
+	data = parseInput(
+		'Please enter the name of the file you wish to ' + ('decrypt' if decrypt else 'encrypt') + ' (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	key = parseInput(
+		'Please enter the name of the file containing the key (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	return data, key
+
+
 advanced = parseInput(
 	'Do you wish to use advanced mode (include special characters) (Y/N)? ',
 	'str',
@@ -119,36 +138,18 @@ advanced = parseInput(
 mode = parseInput('Do you wish to:\n1) Encrypt\n2) Decrypt\n', 'int', lambda n: n <= 2)
 
 if mode == 1:
-	dataFileName = parseInput(
-		'Please enter the name of the file you wish to encrypt (inside crypto_files): ',
-		'str',
-		lambda s: openFile(s)
-	)
-	keyFileName = parseInput(
-		'Please enter the name of the file containing the key (inside crypto_files): ',
-		'str',
-		lambda s: openFile(s)
-	)
+	dataFileName, keyFileName = askFileNames(False)
 
 	dataFile = openFile(dataFileName)
 	keyFile = openFile(keyFileName)
 
-	encrypted = encryptText(clearText(dataFile.read()), createDict(clearText(keyFile.read())))
+	encrypted = encryptText(clearText(dataFile.read(), advanced), createDict(clearText(keyFile.read(), advanced)))
 	print('Your message has been encrypted:\n' + ', '.join(map(str, encrypted)))
 else:
-	dataFileName = parseInput(
-		'Please enter the name of the file you wish to decrypt (inside crypto_files): ',
-		'str',
-		lambda s: openFile(s)
-	)
-	keyFileName = parseInput(
-		'Please enter the name of the file containing the key (inside crypto_files): ',
-		'str',
-		lambda s: openFile(s)
-	)
+	dataFileName, keyFileName = askFileNames(True)
 
 	dataFile = openFile(dataFileName)
 	keyFile = openFile(keyFileName)
 
-	decrypted = decryptText(dataFile.read(), createDict(clearText(keyFile.read())))
+	decrypted = decryptText(dataFile.read(), createDict(clearText(keyFile.read(), advanced)))
 	print('Your message has been decrypted:\n' + decrypted)
