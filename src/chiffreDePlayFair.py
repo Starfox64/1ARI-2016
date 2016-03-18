@@ -114,7 +114,7 @@ def decryptBigram(key, bigram):
 	return key[pos[0][0]][pos[0][1]], key[pos[1][0]][pos[1][1]]
 
 
-def encryptText(text, key):
+def encryptText(text, key): #KEY IS A 2D LIST, TEXT IS A STRING
 	encryptedText = ''
 	for i in range(0, len(text), 2):
 		bigram = encryptBigram(key, (getIndex(key, text[i]), getIndex(key, text[i + 1])))
@@ -122,7 +122,7 @@ def encryptText(text, key):
 	return encryptedText
 
 
-def decryptText(text, key):
+def decryptText(text, key): #KEY IS A 2D LIST, TEXT IS A STRING
 	decryptedText = ''
 	for i in range(0, len(text), 2):
 		bigram = decryptBigram(key, (getIndex(key, text[i]), getIndex(key, text[i + 1])))
