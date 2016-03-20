@@ -35,7 +35,6 @@ def createKey(string, size):
 	for i in range(5):
 		key.append(internL[i * 5 : i * 5 + 5])
 
-	print(key)
 	return key
 
 
@@ -52,7 +51,7 @@ def arrangeCryptedText(string, size, integer):
 	boolean = size % integer != 0
 	for i in range(size // integer + (1 if boolean else 0) ):
 		word = ""
-		for j in range(integer if i != size // integer - 1 else size % integer):
+		for j in range(integer if i < size // integer - 1 else (size - ((size // integer) * i-1)*integer)//2):
 			word += string[i * integer + j]
 			if i * integer + j + 1 > size:
 				break
@@ -64,7 +63,6 @@ def arrangeCryptedText(string, size, integer):
 		subText2.append(l[i + 1])
 	text.append(subText1.copy())
 	text.append(subText2.copy())
-	print(text)
 	return text
 
 
@@ -184,7 +182,6 @@ if mode == 1:
 	data = parseText(dataFile.read())
 
 	encrypted = encryptText(data, len(data), key, wordLength)
-	print(encrypted)
 	print('Your message has been encrypted:\n' + listToString(encrypted))
 else:
 	dataFileName, keyFileName = askFileNames(True)
