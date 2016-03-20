@@ -1,7 +1,7 @@
 Chiffre du Livre:
     Que pensez-vous de la securite de cet algorithme ?
         Plus la clef est longue, plus il est sûr, mais les autres algorithmes n'ont rien a lui envier.
-    Quels sont ses principales qualites et defauts ?
+    Quelles sont ses principales qualites et defauts ?
         Pros:
 	        - Si la cle est assez longue et aleatoire une analyse de frequences n'est pas possible.
 
@@ -11,9 +11,20 @@ Chiffre du Livre:
 
 Chiffre de Playfair:
     Que pensez-vous de la securite de cet algorithme ?
-    Quels sont ses principales qualites et defauts ?
+    Quelles sont ses principales qualites et defauts ?
         Pros:
             - Manuellement, il est aisé de chiffrer et déchiffrer graphiquement des messages.
             - Clef courte
         Cons:
-            -
+            -partage de la clé au préalable
+            -ne nécessite pas une forte puissance de calcul (facile a decrypter)
+
+Chiffre de Collon:
+    Que pensez-vous de la sécurité de cet algorithme ?
+        Moins sûr que celui de playfair, car on peut retrouver la formation de la grille en étudiant les patterns de lettres, d'autant plus que seules 9 sont présentes dans le message chiffré.
+    Quelles sont les principales qualités et défauts ?
+        Pros:
+            -comme playfair, il est simple a utiliser manuellement
+        Cons:
+            -Partage de la clé
+            -moins sûr que celui de playfair
