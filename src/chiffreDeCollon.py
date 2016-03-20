@@ -35,6 +35,7 @@ def createKey(string, size):
 	for i in range(5):
 		key.append(internL[i * 5 : i * 5 + 5])
 
+	print(key)
 	return key
 
 
@@ -51,11 +52,11 @@ def arrangeCryptedText(string, size, integer):
 	boolean = size % integer != 0
 	for i in range(size // integer + (1 if boolean else 0) ):
 		word = ""
-		for j in range(integer):
-			if i * 7 + j + 1 > size: break
+		for j in range(integer if i != size // integer - 1 else size % integer):
 			word += string[i * integer + j]
+			if i * integer + j + 1 > size:
+				break
 		l.append(word)
-
 	subText1 = list()
 	subText2 = list()
 	for i in range(0, len(l), 2):
@@ -63,6 +64,7 @@ def arrangeCryptedText(string, size, integer):
 		subText2.append(l[i + 1])
 	text.append(subText1.copy())
 	text.append(subText2.copy())
+	print(text)
 	return text
 
 
@@ -91,17 +93,19 @@ def encryptText(text, size, key, integer):
 	encryptedText = list()
 	eList1 = list()
 	eList2 = list()
-	for i in range(size // 7):
+	for i in range(size // integer + 1 if size %integer != 0 else 0):
 		encryptedWord1 = ""
 		encryptedWord2 = ""
 		for j in range(integer):
 			bigram = encryptLetter(text[i * integer + j], key)
 			encryptedWord1 += bigram[0]
 			encryptedWord2 += bigram[1]
+			if i * integer + j + 1 >= size:
+				break
 		eList1.append(encryptedWord1)
 		eList2.append(encryptedWord2)
-	encryptedText.append(eList1)
-	encryptedText.append(eList2)
+	encryptedText.append(eList1.copy())
+	encryptedText.append(eList2.copy())
 	return encryptedText
 
 
@@ -180,6 +184,7 @@ if mode == 1:
 	data = parseText(dataFile.read())
 
 	encrypted = encryptText(data, len(data), key, wordLength)
+	print(encrypted)
 	print('Your message has been encrypted:\n' + listToString(encrypted))
 else:
 	dataFileName, keyFileName = askFileNames(True)
