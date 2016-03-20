@@ -37,6 +37,13 @@ def createKey(string, size):
 	return key
 
 
+def listToString(l, n):
+	string = ""
+	for i in range(len(l[0])):
+		string += l[0][i] + l[1][i]
+	return string
+
+
 def arrangeCryptedText(string, size, integer):
 	text = list()
 	l = list()
@@ -119,5 +126,5 @@ print(decryptText(chiffre, cle))
 test = "La petite bite à Valentin"
 test = parseText(test)
 test = encryptText(test, len(test), cle, 7)
-
+print(listToString(test, 5))
 print(decryptText(test, cle))

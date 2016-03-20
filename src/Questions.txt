@@ -1,9 +1,19 @@
-Livre:
-Que pensez-vous de la sécurité de cet algorithme ?
+Chiffre du Livre:
+    Que pensez-vous de la securite de cet algorithme ?
+        Plus la clef est longue, plus il est sÃ»r, mais les autres algorithmes n'ont rien a lui envier.
+    Quels sont ses principales qualites et defauts ?
+        Pros:
+	        - Si la cle est assez longue et aleatoire une analyse de frequences n'est pas possible.
 
-Quels sont ses principales qualités et défauts ?
-Pros:
-	- Si la cle est assé longue et aléatoire une analyse de fréquences n'est pas possible.
+        Cons:
+	        - Il faut se partager la cle au prealable (symetrie)
+	        - Clef nÃ©cessairement trÃ¨s longue
 
-Cons:
-	- Il faut se partager la cle au préalable (symétrie)
+Chiffre de Playfair:
+    Que pensez-vous de la securite de cet algorithme ?
+    Quels sont ses principales qualites et defauts ?
+        Pros:
+            - Manuellement, il est aisÃ© de chiffrer et dÃ©chiffrer graphiquement des messages.
+            - Clef courte
+        Cons:
+            -
