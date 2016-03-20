@@ -1,4 +1,5 @@
 import unicodedata
+import os
 
 def clearText(text):
 	text = text.replace(' ', '')
@@ -37,7 +38,7 @@ def createKey(string, size):
 	return key
 
 
-def listToString(l, n):
+def listToString(l):
 	string = ""
 	for i in range(len(l[0])):
 		string += l[0][i] + l[1][i]
@@ -112,19 +113,85 @@ def decryptText(text, key):
 	return clearedText
 
 
+def parseInput(message, returnType="int", callback=None):
+	while True:
+		res = input(message)
 
-cle = "service académique"
-cle = parseText(clearText(cle))
-cle = createKey(cle, len(cle))
-chiffre = "JSJPS JCPTY TTYXS SPJJU UPTTP ZPTJS SJSSJ XZTPT YZSSS PJSCZ PTTPT YSSJU SSSTP ZPYZT JSJSU CSYPP TXTZS SPJSC JPTTP TPZCP SSJCS YPXTY XP"
-chiffre = parseText(chiffre)
-n = 7
-chiffre = arrangeCryptedText(chiffre, len(chiffre), n)
+		if returnType == "int":
+			try:
+				returnVal = int(res)
+			except ValueError:
+				continue
 
-print(decryptText(chiffre, cle))
+			if not callback or callback(returnVal):
+				return returnVal
+		elif returnType == "float":
+			try:
+				returnVal = float(res)
+			except ValueError:
+				continue
 
-test = "La petite bite à Valentin"
-test = parseText(test)
-test = encryptText(test, len(test), cle, 7)
-print(listToString(test, 5))
-print(decryptText(test, cle))
+			if not callback or callback(returnVal):
+				return returnVal
+		elif returnType == "str":
+			if not callback or callback(res):
+				return res
+
+
+def openFile(fileName):
+	currentDir = os.path.dirname(os.path.realpath(__file__))
+	if os.path.isfile(os.path.join(currentDir, 'crypto_files', fileName)):
+		return open(os.path.join(currentDir, 'crypto_files', fileName), 'r')
+
+
+def askFileNames(decrypt):
+	data = parseInput(
+		'Please enter the name of the file you wish to ' + ('decrypt' if decrypt else 'encrypt') + ' (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	key = parseInput(
+		'Please enter the name of the file containing the key (inside crypto_files): ',
+		'str',
+		lambda s: openFile(s)
+	)
+
+	return data, key
+
+
+mode = parseInput('Do you wish to:\n1) Encrypt\n2) Decrypt\n', 'int', lambda n: 0 < n <= 2)
+
+wordLength = parseInput(
+	'Enter the word length: ',
+	'int',
+	lambda n: n > 0
+)
+
+if mode == 1:
+	dataFileName, keyFileName = askFileNames(False)
+
+	dataFile = openFile(dataFileName)
+	keyFile = openFile(keyFileName)
+
+	key = parseText(keyFile.read())
+	key = createKey(key, len(key))
+
+	data = parseText(dataFile.read())
+
+	encrypted = encryptText(data, len(data), key, wordLength)
+	print('Your message has been encrypted:\n' + listToString(encrypted))
+else:
+	dataFileName, keyFileName = askFileNames(True)
+
+	dataFile = openFile(dataFileName)
+	keyFile = openFile(keyFileName)
+
+	key = parseText(keyFile.read())
+	key = createKey(key, len(key))
+
+	data = parseText(dataFile.read())
+	data = arrangeCryptedText(data, len(data), wordLength)
+
+	decrypted = decryptText(data, key)
+	print('Your message has been decrypted:\n' + decrypted)

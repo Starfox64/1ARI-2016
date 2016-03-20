@@ -135,7 +135,7 @@ advanced = parseInput(
 	'str',
 	lambda s: s.upper() == 'Y' or s.upper() == 'N'
 )
-mode = parseInput('Do you wish to:\n1) Encrypt\n2) Decrypt\n', 'int', lambda n: n <= 2)
+mode = parseInput('Do you wish to:\n1) Encrypt\n2) Decrypt\n', 'int', lambda n: 0 < n <= 2)
 
 if mode == 1:
 	dataFileName, keyFileName = askFileNames(False)
