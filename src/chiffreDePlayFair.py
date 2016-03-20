@@ -79,10 +79,10 @@ def getIndex(key, char):
 
 
 def encryptPos(pos1, pos2):
-	if pos1[0] == pos2[0]:
+	if pos1[1] == pos2[1]:
 		encryptedPos1 = ((pos1[0] + 1) % 5, pos1[1])
 		encryptedPos2 = ((pos2[0] + 1) % 5, pos2[1])
-	elif pos1[1] == pos2[1]:
+	elif pos1[0] == pos2[0]:
 		encryptedPos1 = (pos1[0], (pos1[1] + 1) % 5)
 		encryptedPos2 = (pos2[0], (pos2[1] + 1) % 5)
 	else:
@@ -92,10 +92,10 @@ def encryptPos(pos1, pos2):
 
 
 def decryptPos(pos1, pos2):
-	if pos1[0] == pos2[0]:
+	if pos1[1] == pos2[1]:
 		decryptedPos1 = ((pos1[0] - 1) % 5, pos1[1])
 		decryptedPos2 = ((pos2[0] - 1) % 5, pos2[1])
-	elif pos1[1] == pos2[1]:
+	elif pos1[0] == pos2[0]:
 		decryptedPos1 = (pos1[0], (pos1[1] - 1) % 5)
 		decryptedPos2 = (pos2[0], (pos2[1] - 1) % 5)
 	else:
